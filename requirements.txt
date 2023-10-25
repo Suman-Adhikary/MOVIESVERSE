@@ -1,0 +1,8 @@
+streamlit
+pickleshare
+pandas
+json5
+requests
+path
+scikit-learn==1.2.2
+pathlib
