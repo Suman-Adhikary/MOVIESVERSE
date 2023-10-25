@@ -9,10 +9,8 @@ import requests
 from pathlib import Path
 import os
 
-headers = {
-    "authorization" : st.secrets["api_key"],
-    "content-type" :"application/json"
-}
+
+api_key = st.secrets['api_key']
 
 ######################################################### Import Dataset #########################################################
 
