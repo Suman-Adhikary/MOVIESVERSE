@@ -11,7 +11,7 @@ import os
 
 headers = {
     "authorization" : st.secrets["api_key"],
-    "content-type" :"application/jon"
+    "content-type" :"application/json"
 }
 
 ######################################################### Import Dataset #########################################################
