@@ -9,7 +9,7 @@ import requests
 from pathlib import Path
 import os
 
-
+api_key = st.secrets['api_key']
 
 ######################################################### Import Dataset #########################################################
 
