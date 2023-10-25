@@ -15,8 +15,8 @@ api_key = st.secrets['api_key']
 
 dir = path.Path(__file__)
 sys.path.append(dir.parent.parent)
-path_1 = Path(__file__).parent / '../Dataset/IMDB_Indian.csv'
-path_2 = Path(__file__).parent / '../Dataset/Indian IMDB Similarity.pkl'
+path_1 = Path(__file__).parent / '../Dataset/Indian_with_Poster.csv'
+path_2 = Path(__file__).parent / '../Dataset/Indian_Similarity.pkl'
 INDIAN_MOVIE = pd.read_csv(path_1, lineterminator='\n')
 INDIAN_SIMILARITY = pd.read_pickle(path_2)
 
@@ -39,7 +39,7 @@ def get_recommendations_india(title, cosine_sim=cosine_sim_india):
 
 @st.cache_data
 def MOVIES_LIST_INDIA():
-    return tuple(INDIAN_MOVIE['title'])
+    return tuple(INDIAN_MOVIE['original_title'])
 
 
 
@@ -110,21 +110,10 @@ MOVIES_SELECTION = st.selectbox('ENTER A MOVIE NAME', MOVIES_LIST_INDIA(), place
 USER_INPUT = process_input(MOVIES_SELECTION)
 
 POSTER = []
-TMDB_ID = []
 if st.button('RECOMMEND'):
-    RECOMMENDED_MOVIE = get_recommendations_india(USER_INPUT)['imdb_title_id']
-    for ID in RECOMMENDED_MOVIE:
-        TMDB_ID.append(ID)
-    for i in TMDB_ID:
-        movie_id = i
-        base_url = 'https://api.themoviedb.org/3'
-        response = requests.get(f'{base_url}/movie/{movie_id}?api_key={api_key}')
-
-        if response.status_code == 200:
-            movie_data = response.json()
-            poster_path = movie_data['poster_path']
-            poster_url = f'https://image.tmdb.org/t/p/original{poster_path}'
-            POSTER.append(poster_url)                     
+    RECOMMENDED_MOVIE = get_recommendations_india(USER_INPUT)['Poster']
+    for Poster in RECOMMENDED_MOVIE:
+        POSTER.append(Poster)                   
 
     css_viz = """
     <style>
@@ -152,40 +141,33 @@ if st.button('RECOMMEND'):
     st.markdown(css_viz, unsafe_allow_html=True)
     st.markdown(vi_head, unsafe_allow_html=True)        
     
-    movie_name = GET_IMDB_ID[USER_INPUT]
-    movie_id = movie_name
-    base_url = 'https://api.themoviedb.org/3'
-    response = requests.get(f'{base_url}/movie/{movie_id}?api_key={api_key}')
-
-    if response.status_code == 200:
-        movie_data = response.json()
-        poster_path = movie_data['poster_path']
-        poster_url = f'https://image.tmdb.org/t/p/original{poster_path}'
-        custom_css = """
-        <style>
-            .centered-image-container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 0px 0;
-            }
-            .centered-image {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                margin-bottom: 40px;
-            }
-        </style>
-        """ 
-        image_width = 250
-        image_height = 400
-        html_code = f"""
-        <div class="centered-image-container">
-            <img class="centered-image" src="{poster_url}" alt="Centered Image" width="{image_width}" height="{image_height}">
-        </div>
-        """
-        st.markdown(custom_css, unsafe_allow_html=True)
-        st.markdown(html_code, unsafe_allow_html=True)             
+    movie_name = USER_INPUT
+    image_url = INDIAN_MOVIE[INDIAN_MOVIE['original_title'] == movie_name]['Poster'].values[0]
+    custom_css = """
+    <style>
+        .centered-image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0px 0;
+        }
+        .centered-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 40px;
+        }
+    </style>
+    """ 
+    image_width = 250
+    image_height = 400
+    html_code = f"""
+    <div class="centered-image-container">
+        <img class="centered-image" src="{image_url}" alt="Centered Image" width="{image_width}" height="{image_height}">
+    </div>
+    """
+    st.markdown(custom_css, unsafe_allow_html=True)
+    st.markdown(html_code, unsafe_allow_html=True)             
 
     VI_head = """
         <h4>
@@ -260,8 +242,6 @@ if st.button('RECOMMEND'):
     with col29:
         st.image(POSTER[28])
     with col30:
-        st.image(POSTER[29])
-
-    TMDB_ID.clear()    
+        st.image(POSTER[29])    
     POSTER.clear()   
     st.cache_data.clear() 

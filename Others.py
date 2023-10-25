@@ -17,8 +17,8 @@ api_key = st.secrets['api_key']
 
 dir = path.Path(__file__)
 sys.path.append(dir.parent.parent)
-TMDB_DATA = pd.read_csv('.\\Dataset\\Forign.csv')
-SIMILARITY_PICKLE = pd.read_pickle('.\\Dataset\\Similarity.pkl')
+TMDB_DATA = pd.read_csv('.\\Dataset\\Hollywood_with_Poster.csv')
+SIMILARITY_PICKLE = pd.read_pickle('.\\Dataset\\Hollywood.pkl')
 
 
 
@@ -41,7 +41,7 @@ def get_recommendations(title, cosine_sim=cosine_sim):
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[1:35]
     movie_indices = [i[0] for i in sim_scores]
-    return TMDB_DATA[['id', 'original_title']].iloc[movie_indices]
+    return TMDB_DATA[['id', 'original_title', 'Poster']].iloc[movie_indices]
 
 
 
@@ -117,22 +117,12 @@ def process_input(input_value):
 MOVIES_SELECTION = st.selectbox('ENTER A MOVIE NAME', MOVIES_LIST(), placeholder="🎞️SEARCH OR SELECT A MOVIE🎞️", label_visibility='hidden')
 USER_INPUT = process_input(MOVIES_SELECTION) 
 
-TMDB_ID = []
 POSTER = []
 if st.button('RECOMMEND'):
-    RECOMMENDED_MOVIE = get_recommendations(USER_INPUT)['id']
-    for ID in RECOMMENDED_MOVIE:
-        TMDB_ID.append(ID)
-    for i in TMDB_ID:
-        movie_id = i
-        base_url = 'https://api.themoviedb.org/3'
-        response = requests.get(f'{base_url}/movie/{movie_id}?api_key={api_key}')
+    RECOMMENDED_MOVIE = get_recommendations(USER_INPUT)['Poster']
+    for Poster in RECOMMENDED_MOVIE:
+        POSTER.append(Poster)
 
-        if response.status_code == 200:
-            movie_data = response.json()
-            poster_path = movie_data['poster_path']
-            poster_url = f'https://image.tmdb.org/t/p/original{poster_path}'
-            POSTER.append(poster_url)
 
     css_viz = """
     <style>
@@ -163,40 +153,32 @@ if st.button('RECOMMEND'):
     st.markdown(vi_head, unsafe_allow_html=True)        
     
     movie_name = USER_INPUT
-    search_url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={movie_name}'
-    response = requests.get(search_url)
-    data = response.json()
-    if data.get('results'):
-        first_movie = data['results'][0]
-        poster_path = first_movie.get('poster_path')
-        if poster_path:
-            base_url = 'https://image.tmdb.org/t/p/w400'
-            image_url = f'{base_url}{poster_path}'
-            custom_css = """
-            <style>
-                .centered-image-container {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 0px 0;
-                }
-                .centered-image {
-                    display: block;
-                    margin-left: auto;
-                    margin-right: auto;
-                    margin-bottom: 40px;
-                }
-            </style>
-            """ 
-            image_width = 250
-            image_height = 400
-            html_code = f"""
-            <div class="centered-image-container">
-                <img class="centered-image" src="{image_url}" alt="Centered Image" width="{image_width}" height="{image_height}">
-            </div>
-            """
-            st.markdown(custom_css, unsafe_allow_html=True)
-            st.markdown(html_code, unsafe_allow_html=True)  
+    image_url = TMDB_DATA[TMDB_DATA['original_title'] == movie_name]['Poster'].values[0]
+    custom_css = """
+    <style>
+        .centered-image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0px 0;
+        }
+        .centered-image {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 40px;
+        }
+    </style>
+    """ 
+    image_width = 250
+    image_height = 400
+    html_code = f"""
+    <div class="centered-image-container">
+        <img class="centered-image" src="{image_url}" alt="Centered Image" width="{image_width}" height="{image_height}">
+    </div>
+    """
+    st.markdown(custom_css, unsafe_allow_html=True)
+    st.markdown(html_code, unsafe_allow_html=True)  
 
     VI_head = """
         <h4>
@@ -271,8 +253,6 @@ if st.button('RECOMMEND'):
     with col29:
         st.image(POSTER[28])
     with col30:
-        st.image(POSTER[29])
-
-    TMDB_ID.clear()    
+        st.image(POSTER[29])   
     POSTER.clear()
     st.cache_data.clear()
