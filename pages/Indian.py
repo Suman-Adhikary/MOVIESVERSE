@@ -36,7 +36,7 @@ def get_recommendations_india(title, cosine_sim=cosine_sim_india):
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[1:35]
     movie_indices = [i[0] for i in sim_scores]
-    return INDIAN_MOVIE[['imdb_title_id', 'original_title', 'Combined']].iloc[movie_indices]
+    return INDIAN_MOVIE[['imdb_title_id', 'original_title', 'Poster']].iloc[movie_indices]
 
 @st.cache_data
 def MOVIES_LIST_INDIA():
