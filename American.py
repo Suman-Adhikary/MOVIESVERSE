@@ -17,8 +17,8 @@ api_key = st.secrets['api_key']
 
 dir = path.Path(__file__)
 sys.path.append(dir.parent.parent)
-TMDB_DATA = pd.read_csv('.\\Dataset\\Hollywood_with_Poster.csv')
-SIMILARITY_PICKLE = pd.read_pickle('.\\Dataset\\Hollywood.pkl')
+TMDB_DATA = pd.read_csv('./Dataset/Hollywood_with_Poster.csv')
+SIMILARITY_PICKLE = pd.read_pickle('./Dataset/Hollywood.pkl')
 
 
 
