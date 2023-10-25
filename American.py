@@ -9,7 +9,10 @@ import requests
 import os
 
 
-api_key = st.secrets['api_key']
+headers = {
+    "authorization" : st.secrets["api_key"],
+    "content-type" :"application/jon"
+}
 
 
 
