@@ -155,13 +155,16 @@ if st.button('RECOMMEND'):
         .centered-image {
             display: block;
             margin-left: auto;
+            padding: 10px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5); 
             margin-right: auto;
             margin-bottom: 40px;
         }
     </style>
     """ 
-    image_width = 250
-    image_height = 400
+    image_width = 350
+    image_height = 500
     html_code = f"""
     <div class="centered-image-container">
         <img class="centered-image" src="{image_url}" alt="Centered Image" width="{image_width}" height="{image_height}">
@@ -179,70 +182,138 @@ if st.button('RECOMMEND'):
     st.markdown(css_viz, unsafe_allow_html=True)
     st.markdown(VI_head, unsafe_allow_html=True)         
 
-    col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 = st.columns(10)
-    with col1:
-        st.image(POSTER[0])
-    with col2:
-        st.image(POSTER[1])
-    with col3:
-        st.image(POSTER[2])
-    with col4:
-        st.image(POSTER[3])
-    with col5:
-        st.image(POSTER[4])
-    with col6:
-        st.image(POSTER[5])
-    with col7:
-        st.image(POSTER[6])
-    with col8:
-        st.image(POSTER[7])
-    with col9:
-        st.image(POSTER[8])
-    with col10:
-        st.image(POSTER[9])
+    Recommended_Poster = """
+        <style>
+        .image-row {
+            display: flex;
+            flex-wrap: wrap;
+        }
 
-    col11, col12, col13, col14, col15, col16, col17, col18, col19, col20 = st.columns(10)
-    with col11:
-        st.image(POSTER[10])
-    with col12:
-        st.image(POSTER[11])
-    with col13:
-        st.image(POSTER[12])
-    with col14:
-        st.image(POSTER[13])
-    with col15:
-        st.image(POSTER[14])
-    with col16:
-        st.image(POSTER[15])
-    with col17:
-        st.image(POSTER[16])
-    with col18:
-        st.image(POSTER[17])
-    with col19:
-        st.image(POSTER[18])
-    with col20:
-        st.image(POSTER[19])
+        .image-item {
+            width: 20%; 
+            padding: 10px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5); 
+            height: auto;
+            max-width: auto;
+        }
 
-    col21, col22, col23, col24, col25, col26, col27, col28, col29, col30 = st.columns(10)
-    with col21:
-        st.image(POSTER[20])
-    with col22:
-        st.image(POSTER[21])
-    with col23:
-        st.image(POSTER[22])
-    with col24:
-        st.image(POSTER[23])
-    with col25:
-        st.image(POSTER[24])
-    with col26:
-        st.image(POSTER[25])
-    with col27:
-        st.image(POSTER[26])
-    with col28:
-        st.image(POSTER[27])
-    with col29:
-        st.image(POSTER[28])
-    with col30:
-        st.image(POSTER[29])    
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            border: 1px solid #ccc;
+        }
+    </style>
+    """
+    Recommended_Body = f"""
+            <div class="image-row">
+                <div class="image-item">
+                    <img src="{POSTER[0]}" "alt="Image 1">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[1]}" alt="Image 2">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[2]}" alt="Image 3">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[3]}" alt="Image 4">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[4]}" alt="Image 5">
+                </div>
+            </div>
+            <div class="image-row">    
+                <div class="image-item">
+                    <img src="{POSTER[5]}" alt="Image 6">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[6]}" alt="Image 7">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[7]}" alt="Image 8">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[8]}" alt="Image 9">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[9]}" alt="Image 10">
+                </div>    
+            </div>
+
+            <div class="image-row">
+                <div class="image-item">
+                    <img src="{POSTER[10]}" "alt="Image 1">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[11]}" alt="Image 2">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[12]}" alt="Image 3">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[13]}" alt="Image 4">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[14]}" alt="Image 5">
+                </div>
+            </div>
+            <div class="image-row">    
+                <div class="image-item">
+                    <img src="{POSTER[15]}" alt="Image 6">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[16]}" alt="Image 7">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[17]}" alt="Image 8">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[18]}" alt="Image 9">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[19]}" alt="Image 10">
+                </div>    
+            </div>
+
+            <div class="image-row">
+                <div class="image-item">
+                    <img src="{POSTER[20]}" alt="Image 21">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[21]}" alt="Image 22">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[22]}" alt="Image 22">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[23]}" alt="Image 22">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[24]}" alt="Image 22">
+                </div>
+            </div>    
+            <div class="image-row">    
+                <div class="image-item">
+                    <img src="{POSTER[25]}" alt="Image 22">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[26]}" alt="Image 22">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[27]}" alt="Image 22">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[28]}" alt="Image 22">
+                </div>
+                <div class="image-item">
+                    <img src="{POSTER[29]}" alt="Image 22">
+                </div>
+            </div>
+    """
+    st.markdown(Recommended_Poster, unsafe_allow_html=True)
+    st.markdown(Recommended_Body, unsafe_allow_html=True)
+
     POSTER.clear()   
     st.cache_data.clear() 
