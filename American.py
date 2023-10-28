@@ -41,7 +41,7 @@ def get_recommendations(title, cosine_sim=cosine_sim):
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[1:35]
     movie_indices = [i[0] for i in sim_scores]
-    return TMDB_DATA[['id', 'original_title', 'Poster']].iloc[movie_indices]
+    return TMDB_DATA[['imdb_id', 'original_title', 'Poster']].iloc[movie_indices]
 
 
 
