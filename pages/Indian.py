@@ -184,27 +184,30 @@ if st.button('RECOMMEND'):
 
     Recommended_Poster = """
         <style>
-        .image-row {
-            display: flex;
-            flex-wrap: wrap;
-        }
+            .image-row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
 
-        .image-item {
-            width: 20%; 
-            padding: 10px;
-            box-sizing: border-box;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5); 
-            height: auto;
-            max-width: auto;
-        }
+            .image-item {
+                width: 30%;
+                padding: 10px;
+                box-sizing: border-box;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+                height: auto; 
+                max-width: 328px;
+                margin: 10px; 
+                text-align: center; 
+            }
 
-        .image-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
-            border: 1px solid #ccc;
-        }
-    </style>
+            .image-item img {
+                width: 100%;
+                height: auto;
+                object-fit: cover;
+                border: 1px solid #ccc;
+            }
+        </style>
     """
     Recommended_Body = f"""
             <div class="image-row">
