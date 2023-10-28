@@ -177,8 +177,8 @@ if st.button('RECOMMEND'):
             }
         </style>
     """ 
-    image_width = 250
-    image_height = 400
+    image_width = 350
+    image_height = 500
     html_code = f"""
     <div class="centered-image-container">
         <a href="{poster_url}">
