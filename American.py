@@ -117,11 +117,16 @@ def process_input(input_value):
 MOVIES_SELECTION = st.selectbox('ENTER A MOVIE NAME', MOVIES_LIST(), placeholder="🎞️SEARCH OR SELECT A MOVIE🎞️", label_visibility='hidden')
 USER_INPUT = process_input(MOVIES_SELECTION) 
 
+IMDB_LINK = "https://www.imdb.com/title/"
+
 POSTER = []
+MOVIE_LINK = []
 if st.button('RECOMMEND'):
-    RECOMMENDED_MOVIE = get_recommendations(USER_INPUT)['Poster']
-    for Poster in RECOMMENDED_MOVIE:
+    RECOMMENDED_MOVIE = get_recommendations(USER_INPUT)[['Poster', 'imdb_id']]
+    for Poster in RECOMMENDED_MOVIE['Poster']:
         POSTER.append(Poster)
+    for id in RECOMMENDED_MOVIE['imdb_id']:
+        MOVIE_LINK.append(f"{IMDB_LINK}{id}")    
 
 
     css_viz = """
@@ -154,30 +159,41 @@ if st.button('RECOMMEND'):
     
     movie_name = USER_INPUT
     image_url = TMDB_DATA[TMDB_DATA['original_title'] == movie_name]['Poster'].values[0]
+    imdb_id = TMDB_DATA[TMDB_DATA['original_title'] == movie_name]['imdb_id'].values[0]
+    poster_url = f"{IMDB_LINK}{imdb_id}"
     custom_css = """
-    <style>
-        .centered-image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0px 0;
-        }
-        .centered-image {
-            display: block;
-            margin-left: auto;
-            padding: 10px;
-            box-sizing: border-box;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5); 
-            margin-right: auto;
-            margin-bottom: 40px;
-        }
-    </style>
+        <style>
+            .centered-image-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0px;
+            }
+
+            .centered-image {
+                display: block;
+                margin-left: auto;
+                padding: 10px;
+                box-sizing: border-box;
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+                margin-right: auto;
+                margin-bottom: 40px;
+                transition: box-shadow 0.3s ease-in-out;
+            }
+
+            .centered-image:hover {
+                box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.7);
+                background-color: #13315c;
+            }
+        </style>
     """ 
     image_width = 350
     image_height = 500
     html_code = f"""
     <div class="centered-image-container">
-        <img class="centered-image" src="{image_url}" alt="Centered Image" width="{image_width}" height="{image_height}">
+        <a href="{poster_url}">
+            <img class="centered-image" src="{image_url}" alt="Centered Image" width="{image_width}" height="{image_height}">
+        </a>    
     </div>
     """
     st.markdown(custom_css, unsafe_allow_html=True)
@@ -190,7 +206,7 @@ if st.button('RECOMMEND'):
         <div class = "rainbow-divider"></div>
     """  
     st.markdown(css_viz, unsafe_allow_html=True)
-    st.markdown(VI_head, unsafe_allow_html=True) 
+    st.markdown(VI_head, unsafe_allow_html=True)            
 
     Recommended_Poster = """
         <style>
@@ -204,11 +220,17 @@ if st.button('RECOMMEND'):
                 width: 30%;
                 padding: 10px;
                 box-sizing: border-box;
-                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-                height: auto; 
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+                height: auto;
                 max-width: 328px;
-                margin: 10px; 
-                text-align: center; 
+                margin: 10px;
+                text-align: center;
+                transition: box-shadow 0.3s, background-color 0.3s;
+            }
+
+            .image-item:hover {
+                box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.8);
+                background-color: #13315c;
             }
 
             .image-item img {
@@ -216,117 +238,177 @@ if st.button('RECOMMEND'):
                 height: auto;
                 object-fit: cover;
                 border: 1px solid #ccc;
+                cursor: pointer;
             }
         </style>
     """
     Recommended_Body = f"""
-            <div class="image-row">
-                <div class="image-item">
+        <div class="image-row">
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[0]}">
                     <img src="{POSTER[0]}" "alt="Image 1">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[1]}" alt="Image 2">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[2]}" alt="Image 3">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[3]}" alt="Image 4">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[4]}" alt="Image 5">
-                </div>
+                </a>    
             </div>
-            <div class="image-row">    
-                <div class="image-item">
-                    <img src="{POSTER[5]}" alt="Image 6">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[6]}" alt="Image 7">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[7]}" alt="Image 8">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[8]}" alt="Image 9">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[9]}" alt="Image 10">
-                </div>    
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[1]}">
+                    <img src="{POSTER[1]}" "alt="Image 1">
+                </a>    
             </div>
-
-            <div class="image-row">
-                <div class="image-item">
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[2]}">
+                    <img src="{POSTER[2]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[3]}">
+                    <img src="{POSTER[3]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[4]}">
+                    <img src="{POSTER[4]}" "alt="Image 1">
+                </a>    
+            </div>
+        </div>
+        <div class="image-row">
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[5]}">
+                    <img src="{POSTER[5]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[6]}">
+                    <img src="{POSTER[6]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[7]}">
+                    <img src="{POSTER[7]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[8]}">
+                    <img src="{POSTER[8]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[9]}">
+                    <img src="{POSTER[9]}" "alt="Image 1">
+                </a>    
+            </div>
+        </div>
+        <div class="image-row">
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[10]}">
                     <img src="{POSTER[10]}" "alt="Image 1">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[11]}" alt="Image 2">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[12]}" alt="Image 3">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[13]}" alt="Image 4">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[14]}" alt="Image 5">
-                </div>
+                </a>    
             </div>
-            <div class="image-row">    
-                <div class="image-item">
-                    <img src="{POSTER[15]}" alt="Image 6">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[16]}" alt="Image 7">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[17]}" alt="Image 8">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[18]}" alt="Image 9">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[19]}" alt="Image 10">
-                </div>    
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[11]}">
+                    <img src="{POSTER[11]}" "alt="Image 1">
+                </a>    
             </div>
-
-            <div class="image-row">
-                <div class="image-item">
-                    <img src="{POSTER[20]}" alt="Image 21">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[21]}" alt="Image 22">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[22]}" alt="Image 22">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[23]}" alt="Image 22">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[24]}" alt="Image 22">
-                </div>
-            </div>    
-            <div class="image-row">    
-                <div class="image-item">
-                    <img src="{POSTER[25]}" alt="Image 22">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[26]}" alt="Image 22">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[27]}" alt="Image 22">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[28]}" alt="Image 22">
-                </div>
-                <div class="image-item">
-                    <img src="{POSTER[29]}" alt="Image 22">
-                </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[12]}">
+                    <img src="{POSTER[12]}" "alt="Image 1">
+                </a>    
             </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[13]}">
+                    <img src="{POSTER[13]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[14]}">
+                    <img src="{POSTER[14]}" "alt="Image 1">
+                </a>    
+            </div>
+        </div>
+        <div class="image-row">
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[15]}">
+                    <img src="{POSTER[15]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[16]}">
+                    <img src="{POSTER[16]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[17]}">
+                    <img src="{POSTER[17]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[18]}">
+                    <img src="{POSTER[18]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[19]}">
+                    <img src="{POSTER[19]}" "alt="Image 1">
+                </a>    
+            </div>
+        </div>
+        <div class="image-row">
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[20]}">
+                    <img src="{POSTER[20]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[21]}">
+                    <img src="{POSTER[21]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[22]}">
+                    <img src="{POSTER[22]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[23]}">
+                    <img src="{POSTER[23]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[24]}">
+                    <img src="{POSTER[24]}" "alt="Image 1">
+                </a>    
+            </div>
+        </div>
+        <div class="image-row">
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[25]}">
+                    <img src="{POSTER[25]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[26]}">
+                    <img src="{POSTER[26]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[27]}">
+                    <img src="{POSTER[27]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[28]}">
+                    <img src="{POSTER[28]}" "alt="Image 1">
+                </a>    
+            </div>
+            <div class="image-item">
+                <a href = "{MOVIE_LINK[29]}">
+                    <img src="{POSTER[29]}" "alt="Image 1">
+                </a>    
+            </div>
+        </div>
     """
+
     st.markdown(Recommended_Poster, unsafe_allow_html=True)
-    st.markdown(Recommended_Body, unsafe_allow_html=True)    
+    st.markdown(Recommended_Body, unsafe_allow_html=True)
 
     POSTER.clear()
     st.cache_data.clear()
