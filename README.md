@@ -1,3 +1,4 @@
+
 # MOVIE RECOMMENDED SYSTEM
 
 A movie recommendation system employs advanced algorithms to analyze user preferences and viewing history, providing personalized film suggestions. By utilizing machine learning, it constantly refines its recommendations based on user feedback, enhancing accuracy over time. These systems often consider various factors, such as genre, director, and user ratings, to tailor suggestions to individual tastes. With the rise of streaming platforms, movie recommendation systems play a crucial role in helping users discover content that aligns with their interests, creating a more satisfying and immersive viewing experience. Ultimately, these systems bridge the gap between users and a vast array of films, making the selection process more seamless and enjoyable.
@@ -15,6 +16,7 @@ To deploy this project install this modules.
   pip install numpy
   pip install pandas
   pip install sklearn
+  pip install streamlit
 ```
 
 
@@ -46,3 +48,4 @@ A cosine similarity of -1 implies dissimilarity.
 ## Demo
 
 https://moviesverse.streamlit.app/
+
